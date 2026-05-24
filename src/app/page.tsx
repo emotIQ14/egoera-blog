@@ -1,66 +1,146 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { getPosts, getCategories } from '@/lib/wp';
+import PostCard from '@/components/PostCard';
+import Link from 'next/link';
 
-export default function Home() {
+export const revalidate = 3600;
+
+export default async function HomePage() {
+  const [posts, categories] = await Promise.all([
+    getPosts({ per_page: 12 }),
+    getCategories(),
+  ]);
+
+  const [featured, ...rest] = posts;
+  const topCategories = categories.filter((c) => c.count > 0).slice(0, 6);
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="home">
+      <section className="hero container">
+        <p className="eyebrow">— Egoera Blog —</p>
+        <h1 className="hero-title">
+          Psicología, <em className="italic">despacio</em>.
+        </h1>
+        <p className="hero-lede">
+          Lecturas sobre regulación emocional, vínculos, apego, ansiedad y autoconocimiento.
+          Escritas por <Link href="https://egoera.es/ander-bilbao/">Ander Bilbao</Link>, psicólogo.
+          Sin tecnicismos vacíos, sin atajos.
+        </p>
+      </section>
+
+      {topCategories.length > 0 && (
+        <section className="categories container" aria-label="Categorías">
+          <ul className="cat-list">
+            {topCategories.map((c) => (
+              <li key={c.id}>
+                <Link href={`/categoria/${c.slug}`} className="cat-chip">
+                  {c.name} <span className="cat-count">{c.count}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {featured && (
+        <section className="featured container" aria-label="Última lectura">
+          <PostCard post={featured} featured />
+        </section>
+      )}
+
+      {rest.length > 0 && (
+        <section className="grid-section container-wide" aria-label="Lecturas anteriores">
+          <p className="eyebrow grid-eyebrow">— Anteriores —</p>
+          <div className="grid">
+            {rest.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      <style>{`
+        .home { padding: 0 0 40px; }
+        .hero {
+          padding: 64px 24px 32px;
+          text-align: center;
+        }
+        .hero .eyebrow { color: var(--cobalto); margin-bottom: 18px; opacity: 1; }
+        .hero-title {
+          font-family: var(--font-display);
+          font-style: italic;
+          font-weight: 700;
+          font-size: clamp(40px, 8vw, 64px);
+          line-height: 1.05;
+          letter-spacing: -0.02em;
+          color: var(--ink);
+          margin-bottom: 20px;
+        }
+        .hero-title em { color: var(--cobalto); }
+        .hero-lede {
+          font-family: var(--font-body);
+          font-size: 17px;
+          line-height: 1.6;
+          color: var(--ink);
+          opacity: 0.8;
+          max-width: 560px;
+          margin: 0 auto;
+        }
+        .hero-lede a {
+          color: var(--cobalto);
+          text-decoration: underline;
+          text-underline-offset: 3px;
+        }
+
+        .categories { padding: 24px 24px 8px; }
+        .cat-list {
+          list-style: none;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          justify-content: center;
+        }
+        .cat-chip {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 8px 14px;
+          background: var(--crema-soft);
+          border: 1px solid rgba(13, 15, 61, 0.08);
+          border-radius: var(--r-pill);
+          font-family: var(--font-mono);
+          font-size: 11px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          font-weight: 500;
+          color: var(--ink);
+          transition: background 0.15s, border-color 0.15s;
+        }
+        .cat-chip:hover {
+          background: rgba(29, 43, 219, 0.06);
+          border-color: rgba(29, 43, 219, 0.2);
+        }
+        .cat-count {
+          font-size: 9px;
+          opacity: 0.55;
+          background: var(--crema-dark);
+          padding: 1px 6px;
+          border-radius: var(--r-pill);
+        }
+
+        .featured { padding: 32px 24px; }
+
+        .grid-section { padding: 48px 24px; }
+        .grid-eyebrow {
+          color: var(--ink);
+          opacity: 0.5;
+          margin-bottom: 20px;
+        }
+        .grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+          gap: 22px;
+        }
+      `}</style>
     </div>
   );
 }
