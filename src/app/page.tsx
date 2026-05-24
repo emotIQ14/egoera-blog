@@ -49,11 +49,19 @@ export default async function HomePage() {
 
       {rest.length > 0 && (
         <section className="grid-section container-wide" aria-label="Lecturas anteriores">
-          <p className="eyebrow grid-eyebrow">— Anteriores —</p>
+          <p className="eyebrow grid-eyebrow">
+            — Anteriores · {rest.length} {rest.length === 1 ? 'lectura' : 'lecturas'} —
+          </p>
           <div className="grid">
             {rest.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}
+          </div>
+          {/* CTA al hub para descubrir más, ya que aún no hay paginación */}
+          <div className="grid-more">
+            <Link href="/categoria/regulacion-emocional" className="grid-more-link">
+              Explorar por categoría →
+            </Link>
           </div>
         </section>
       )}
@@ -61,19 +69,25 @@ export default async function HomePage() {
       <style>{`
         .home { padding: 0 0 40px; }
         .hero {
-          padding: 64px 24px 32px;
+          padding: 40px 24px 24px;
           text-align: center;
+        }
+        @media (min-width: 768px) {
+          .hero { padding: 80px 24px 40px; }
         }
         .hero .eyebrow { color: var(--cobalto); margin-bottom: 18px; opacity: 1; }
         .hero-title {
           font-family: var(--font-display);
           font-style: italic;
           font-weight: 700;
-          font-size: clamp(40px, 8vw, 64px);
+          font-size: clamp(34px, 8vw, 64px);
           line-height: 1.05;
           letter-spacing: -0.02em;
           color: var(--ink);
-          margin-bottom: 20px;
+          margin-bottom: 16px;
+        }
+        .hero-lede {
+          margin-top: 6px;
         }
         .hero-title em { color: var(--cobalto); }
         .hero-lede {
@@ -103,7 +117,8 @@ export default async function HomePage() {
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          padding: 8px 14px;
+          padding: 12px 16px;
+          min-height: 44px;
           background: var(--crema-soft);
           border: 1px solid rgba(13, 15, 61, 0.08);
           border-radius: var(--r-pill);
@@ -139,6 +154,28 @@ export default async function HomePage() {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
           gap: 22px;
+        }
+
+        /* CTA "explorar más" al final del grid */
+        .grid-more {
+          margin-top: 32px;
+          text-align: center;
+        }
+        .grid-more-link {
+          display: inline-block;
+          font-family: var(--font-mono);
+          font-size: 11px;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: var(--cobalto);
+          padding: 14px 22px;
+          border: 1px dashed rgba(29, 43, 219, 0.3);
+          border-radius: var(--r-pill);
+          transition: background 0.15s, border-color 0.15s;
+        }
+        .grid-more-link:hover {
+          background: rgba(29, 43, 219, 0.06);
+          border-color: var(--cobalto);
         }
       `}</style>
     </div>

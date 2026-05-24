@@ -71,6 +71,8 @@ export default function Nav() {
           color: var(--ink);
           opacity: 0.7;
           transition: opacity 0.15s;
+          padding: 10px 6px;
+          display: inline-block;
         }
         .nav-links a:hover { opacity: 1; }
         @media (max-width: 540px) {
