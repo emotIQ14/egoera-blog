@@ -159,8 +159,8 @@ export default function PostCard({ post, featured = false }: { post: WPPost; fea
           color: rgba(13, 15, 61, 0.78);
         }
         .post-card-mins-short {
-          /* Pill con bg coral + texto crema: contraste ≥7:1 (AAA) */
-          background: var(--accent-deep);
+          /* Pill con bg ink + texto crema: contraste ≥11:1 (AAA holgado) */
+          background: var(--ink);
           color: var(--crema);
           font-weight: 700;
           padding: 2px 8px;
