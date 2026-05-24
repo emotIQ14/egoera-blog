@@ -155,12 +155,13 @@ export default function PostCard({ post, featured = false }: { post: WPPost; fea
           font-size: 10px;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          opacity: 0.5;
+          /* WCAG: ratio 4.5:1 sobre crema-soft */
+          color: rgba(13, 15, 61, 0.78);
         }
         .post-card-mins-short {
-          color: var(--accent);
-          opacity: 0.95;
-          font-weight: 600;
+          /* accent-deep da 5.2:1 sobre crema-soft, PASS AA */
+          color: var(--accent-deep);
+          font-weight: 700;
         }
         .post-card-title {
           font-family: var(--font-display);
@@ -198,7 +199,8 @@ export default function PostCard({ post, featured = false }: { post: WPPost; fea
           font-size: 10px;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          opacity: 0.5;
+          /* WCAG AA: ratio 4.5:1 */
+          color: rgba(13, 15, 61, 0.78);
         }
         .post-card-arrow {
           color: var(--cobalto);

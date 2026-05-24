@@ -84,7 +84,14 @@ button {
   letter-spacing: 0.22em;
   text-transform: uppercase;
   font-weight: 500;
-  opacity: 0.6;
+  /* WCAG 1.4.3: rgba con alpha 0.72 sobre crema da ratio ≥4.5:1 (PASS AA) */
+  /* Antes era opacity: 0.6 que daba 3.34:1 (FAIL AA) */
+  color: rgba(13, 15, 61, 0.78);
+}
+
+/* Helper class for muted meta info (date, reading mins, counts) — accesible */
+.text-meta {
+  color: rgba(13, 15, 61, 0.78);
 }
 
 /* ===== Container ===== */

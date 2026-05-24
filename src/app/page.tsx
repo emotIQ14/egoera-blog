@@ -136,7 +136,8 @@ export default async function HomePage() {
         }
         .cat-count {
           font-size: 9px;
-          opacity: 0.55;
+          /* WCAG: rgba alpha 0.7 sobre crema-dark da ≥4.5:1 */
+          color: rgba(13, 15, 61, 0.75);
           background: var(--crema-dark);
           padding: 1px 6px;
           border-radius: var(--r-pill);
@@ -146,8 +147,8 @@ export default async function HomePage() {
 
         .grid-section { padding: 48px 24px; }
         .grid-eyebrow {
-          color: var(--ink);
-          opacity: 0.5;
+          /* WCAG: ratio 4.5:1 sobre crema */
+          color: rgba(13, 15, 61, 0.72);
           margin-bottom: 20px;
         }
         .grid {
