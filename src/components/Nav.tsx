@@ -16,6 +16,9 @@ export default function Nav() {
             <Link href="/">Blog</Link>
           </li>
           <li>
+            <Link href="/buscar" aria-label="Buscar lecturas">Buscar</Link>
+          </li>
+          <li>
             <a href="https://diario.egoera.es" rel="noopener">Diario</a>
           </li>
         </ul>
